@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-df_person_colision = pd.read_csv("dados\Motor_Vehicle_Collisions_-_Person.csv")
+df_person_colision = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Person.csv")
 
 class CarSeatDangers:
     def __init__(self):
@@ -119,7 +119,7 @@ class CarSeatDangers:
         clean_df['position_idx'] = clean_df['POSITION_IN_VEHICLE'].map(lambda pos: self.positions.index(pos))
 
         # Iterating over all rows of the df_pessoas DataFrame
-        for index, row in df_person_colision.iterrows(): # iterrows returns a tuple (index, data), but only data value is needed
+        for index, row in clean_df.iterrows(): # iterrows returns a tuple (index, data), but only data value is needed
             # Find the position index
             idx = self.positions.index(row['POSITION_IN_VEHICLE'])
             
