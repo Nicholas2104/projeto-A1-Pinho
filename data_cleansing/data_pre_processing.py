@@ -6,7 +6,7 @@ crashes = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Crashes_20241001.csv")
 #vehicle = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Vehicles_20240925.csv")
 
 
-class CrashLocationData():
+class CrashLocationData:
     def __init__(self):
         self.full_geo_data = self.get_geo_data()
 
@@ -47,7 +47,7 @@ class CrashLocationData():
         data.loc[coordinates.index, "LATITUDE"] = coordinates["latitude"] 
         return data
 
-class LiscenseStatusCollisionData():
+class LiscenseStatusCollisionData:
     def __init__(self):
         self.complete_liscense_status_df = self.get_liscense_and_collision_info()
     def get_liscense_and_collision_info(self) -> pd.DataFrame:
