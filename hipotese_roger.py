@@ -1,9 +1,11 @@
+# Module documentation
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
 # table that contains details for people involved in the crash where each row represents a person
-df_person_colision = pd.read_csv("pessoas_colisoes.csv")
+df_person_colision = pd.read_csv("dados\Motor_Vehicle_Collisions_-_Person.csv")
 
 """
 My hypothesis:
@@ -32,7 +34,7 @@ filters:
 """
 
 
-def remove_lines(df_person_colision):
+def remove_lines(df_person_colision: pd.DataFrame):
     """
     A function that receives as a parameter a DataFrame with the data that will be used in the hypothesis and cleans it
 
@@ -59,13 +61,13 @@ def remove_lines(df_person_colision):
     df_person_colision.dropna(subset=['POSITION_IN_VEHICLE'], inplace=True)
 
     # Selecting the lines that are null, that is, those cases in which safety equipment was not used
-    df_person_colision = df_person_colision[df_person_colision['SAFETY_EQUIPMENT'].isna()]
-
+    df_person_colision = df_person_colision[df_person_colision['SAFETY_EQUIPMENT'].isna() == True]
+    df_person_colision.reset_index(inplace=True)
     return df_person_colision
 
-def replace_values(df_person_colision):
+def replace_values(df_person_colision: pd.DataFrame):
     """
-    A function that replaces the values ​​in the POSITION_IN_VEHICLE column with smaller values, so that they are easier to understand
+    A function that replaces the values in the POSITION_IN_VEHICLE column with smaller values, so that they are easier to understand
 
     Parameters
     ----------
@@ -95,7 +97,7 @@ def replace_values(df_person_colision):
 
     return df_person_colision
 
-def data_processing(positions, accident_count, df_person_colision):
+def data_processing(positions: list, accident_count: np.ndarray, df_person_colision: pd.DataFrame):
     """
     A function that groups the data and prepares it for plotting on the graph
 
@@ -108,7 +110,7 @@ def data_processing(positions, accident_count, df_person_colision):
         An array that contains only 0's, but will be filled according to the number of minor, medium or serious accidents that occurred
     
     replaced_lines : pandas.core.frame.DataFrame
-        The DataFrame with rows removed and values ​​changed
+        The DataFrame with rows removed and values changed
          
     Returns
     -------
@@ -116,8 +118,7 @@ def data_processing(positions, accident_count, df_person_colision):
 
     """
     # Iterating over all rows of the df_pessoas DataFrame
-    for index, row in df_person_colision.iterrows():
-
+    for index, row in df_person_colision.iterrows(): # iterrows returns a tuple (index, data), but only data value is needed
         # Find the position index
         idx = positions.index(row['POSITION_IN_VEHICLE'])
         
@@ -133,7 +134,7 @@ def data_processing(positions, accident_count, df_person_colision):
         elif row['COMPLAINT'] in minor:
             accident_count[idx][2] += 1
 
-    return accident_count
+    return np.array(accident_count)
 
 def show_graph(positions, accident_count):
     """
@@ -169,11 +170,11 @@ def show_graph(positions, accident_count):
     # Customizing the chart
     plt.title('Severity of Accidents by Seat Position (Without Using a Belt)')
     plt.xlabel('Seat Position')
-    plt.ylabel('Number of Accidents')
+    plt.ylabel('Logaritmic Number of Accidents')
     plt.legend(title='Injury Severity')
 
     # Showing the graph
-    return plt.show()
+    plt.show()
 
 
 # Declaration of variables and Calling the functions
@@ -196,8 +197,9 @@ df_person_colision = replace_values(df_person_colision)
 positions = df_person_colision['POSITION_IN_VEHICLE'].unique().tolist()
 
 # 3 columns with 0's (minor, moderate and severe) for each vehicle position
-accident_count = np.zeros((len(positions), 3)) 
 
-data_processing(positions, accident_count, df_person_colision)
+accident_count = np.zeros((len(positions), 3))
 
-print(show_graph(positions, accident_count))
+a = data_processing(positions, accident_count, df_person_colision)
+
+show_graph(positions, a)
