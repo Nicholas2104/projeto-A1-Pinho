@@ -1,3 +1,5 @@
+# Module to prepare geodata for dataplotting
+
 import pandas as pd
 import pgeocode
 
@@ -6,7 +8,7 @@ crashes = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Crashes.csv")
 #vehicle = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Vehicles_20240925.csv")
 
 
-class CrashLocationData():
+class CrashLocationData:
     def __init__(self):
         self.full_geo_data = self.get_geo_data()
 
