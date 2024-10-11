@@ -116,4 +116,5 @@ class PedestriansAccidentsGraphs:
         g._legend.set_bbox_to_anchor((1, 0.75)) # Moving the legend for it not to overlap with the graph
         g._legend.set_frame_on(True)
         plt.tight_layout() # Ensure that all visualizations are correctly displayed
+        g.savefig()
         plt.show()
