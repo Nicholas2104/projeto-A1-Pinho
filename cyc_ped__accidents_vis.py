@@ -9,10 +9,10 @@ import seaborn
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# TODO correct the data_cleansing import by using the sys path
 import sys
 import os
-sys.path.append(os.path.abspath('../data_cleansing'))
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/.."))
+
 from data_cleansing import data_pre_processing
 
 
@@ -69,7 +69,6 @@ class PedestriansAccidents:
                                         cnorm='eq_hist', 
                                         cmap=cc.fire[100:], 
                                         bgcolor='black')
-        hvplot.save(plot)
         hvplot.show(plot)
 
 
@@ -94,7 +93,6 @@ class PedestriansAccidentsGraphs:
                                                                 'NUMBER OF PEDESTRIANS KILLED']].sum()
         # Sort the incidents count in a descending order, so the first ones have more accidents
         incidents_by_street.sort_values(by='GENERAL INCIDENTS',ascending=False, inplace=True)
-        print(incidents_by_street['GENERAL INCIDENTS'])
         return incidents_by_street
 
     def accidents_graphs_plot(self):
@@ -116,5 +114,4 @@ class PedestriansAccidentsGraphs:
         g._legend.set_bbox_to_anchor((1, 0.75)) # Moving the legend for it not to overlap with the graph
         g._legend.set_frame_on(True)
         plt.tight_layout() # Ensure that all visualizations are correctly displayed
-        g.savefig()
         plt.show()
