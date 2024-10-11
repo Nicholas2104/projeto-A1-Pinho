@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 crashes = pd.read_csv("dados/Motor_Vehicle_Collisions_-_Crashes.csv")
 
-class SeasonalAlcohol:
+class SeasonalAlcoholColissions:
     """
     Used to filter and plot data related to drug usage or alcohol drinking along the months of the year
     """
