@@ -88,7 +88,9 @@ class CrashByPeriodTrends:
             max_late_night = summed_df[summed_df['TIME OF DAY'] == 'late_night'].sort_values(by='Number of occurrences', ascending=False).head(5)['CONTRIBUTING FACTOR']
 
             most_common_contributing_factors = list(set(max_morning.to_list() + max_mid_day.to_list() + max_night.to_list() + max_late_night.to_list())) # Compile the most common contributing factors into a list
-
+            day_order = ['morning', 'mid_day', 'night', 'late_night']
+            summed_df['TIME OF DAY'] = pd.Categorical(summed_df['TIME OF DAY'], categories=day_order, ordered=True)
+            summed_df = summed_df.sort_values(by='TIME OF DAY')
             return summed_df, most_common_contributing_factors
         except KeyError as error:
             print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
@@ -114,3 +116,5 @@ class CrashByPeriodTrends:
         except KeyError as error:
             print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
 
+c = CrashByPeriodTrends()
+c.crash_by_period_plot()
