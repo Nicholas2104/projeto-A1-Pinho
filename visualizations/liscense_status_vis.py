@@ -3,6 +3,7 @@ import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/.."))
 
@@ -10,7 +11,7 @@ from data_cleansing.data_pre_processing import LiscenseStatusCollisionData
 
 class LiscenseStatusTrends:
     def __init__(self):
-        self.collsion_data = LiscenseStatusCollisionData().complete_liscense_status_df
+        self.collision_data = LiscenseStatusCollisionData().complete_liscense_status_df
     def classify_contributing_factor(self,row):
         contributing_factor_1 = row['CONTRIBUTING_FACTOR_1']
         contributing_factor_2 = row['CONTRIBUTING_FACTOR_2']
@@ -23,22 +24,22 @@ class LiscenseStatusTrends:
             return 'Other'
         
     def get_borough_collision_composition(self) -> pd.DataFrame:
-        self.collsion_data['CONTRIBUTING FACTOR CLASS'] = self.collsion_data.apply(self.classify_contributing_factor,axis=1)
-        borough_group_collisions = self.collsion_data.groupby(by='BOROUGH')[['CONTRIBUTING FACTOR CLASS']].value_counts(normalize = True).reset_index(name='Perecentage of Collisions')
+        self.collision_data['CONTRIBUTING FACTOR CLASS'] = self.collision_data.apply(self.classify_contributing_factor,axis=1)
+        borough_group_collisions = self.collision_data.groupby(by='BOROUGH')[['CONTRIBUTING FACTOR CLASS']].value_counts(normalize = True).reset_index(name='Perecentage of Collisions')
         return borough_group_collisions
     
     def get_population_collision_composition(self) -> pd.DataFrame:
-        self.collsion_data['CONTRIBUTING FACTOR CLASS'] = self.collsion_data.apply(self.classify_contributing_factor,axis=1)
-        population_collision_composition = self.collsion_data[['CONTRIBUTING FACTOR CLASS']].value_counts(normalize = True).reset_index(name='Perecentage of Collisions')
+        self.collision_data['CONTRIBUTING FACTOR CLASS'] = self.collision_data.apply(self.classify_contributing_factor,axis=1)
+        population_collision_composition = self.collision_data[['CONTRIBUTING FACTOR CLASS']].value_counts(normalize = True).reset_index(name='Perecentage of Collisions')
         population_collision_composition['BOROUGH'] = 'All NYC'
         return population_collision_composition
     
     def get_borough_liscense_composition(self) -> pd.DataFrame:
-        borough_lisecense_composition = self.collsion_data.groupby(by='BOROUGH')['DRIVER_LICENSE_STATUS'].value_counts(normalize=True).reset_index(name='Perecentage of Collisions')
+        borough_lisecense_composition = self.collision_data.groupby(by='BOROUGH')['DRIVER_LICENSE_STATUS'].value_counts(normalize=True).reset_index(name='Perecentage of Collisions')
         return borough_lisecense_composition
     
     def get_population_liscense_composition(self) -> pd.DataFrame:
-        population_lisecense_composition = self.collsion_data['DRIVER_LICENSE_STATUS'].value_counts(normalize=True).reset_index(name='Perecentage of Collisions')
+        population_lisecense_composition = self.collision_data['DRIVER_LICENSE_STATUS'].value_counts(normalize=True).reset_index(name='Perecentage of Collisions')
         population_lisecense_composition['BOROUGH'] = 'All NYC'
         return population_lisecense_composition
     
@@ -110,9 +111,31 @@ class LiscenseStatusTrends:
         borough_collision_comp = self.get_borough_collision_composition()
         borough_lisc_comp = self.get_borough_liscense_composition()
         
-        borough_inattention_collisions = borough_collision_comp[borough_collision_comp['ONTRIBUTING FACTOR CLASS'] == 'Inattention/Inexeprience Related']
+        borough_inattention_collisions = borough_collision_comp[borough_collision_comp['CONTRIBUTING FACTOR CLASS'] == 'Inattention/Inexeprience Related']
+
+        filtered_borough_lisc_comp = borough_lisc_comp[borough_lisc_comp['DRIVER_LICENSE_STATUS'] != 'Licensed']
+        sum_borough_lisc_comp = filtered_borough_lisc_comp.groupby(by='BOROUGH',as_index=False)['Perecentage of Collisions'].sum()
         
+        x_axis_percentage_of_drivers = sum_borough_lisc_comp['Perecentage of Collisions']
+        y_axis_percentage_of_collisions = borough_inattention_collisions['Perecentage of Collisions']
+        borough_names = sum_borough_lisc_comp['BOROUGH']
 
-        print(borough_lisc_comp)
+        plt.scatter(x=x_axis_percentage_of_drivers, y=y_axis_percentage_of_collisions)
 
-c = LiscenseStatusTrends().scatter_plot()
+        for index, borough in enumerate(borough_names):
+            plt.annotate(borough, (x_axis_percentage_of_drivers.iloc[index], y_axis_percentage_of_collisions.iloc[index]), 
+                        textcoords="offset points", xytext=(5,5), ha='center')
+
+        z = np.polyfit(x_axis_percentage_of_drivers, y_axis_percentage_of_collisions, 1)
+        p = np.poly1d(z)
+        plt.plot(x_axis_percentage_of_drivers,p(x_axis_percentage_of_drivers),'r')
+
+        plt.title('Percentage of Unlicensed/Permit Drivers vs Inattention/Inexperience Collisions')
+        plt.xlabel('Percentage of Unlicensed/Permit Drivers',labelpad=2)
+        plt.ylabel('Percentage of Inattention/Inexperience Collisions',labelpad=2)
+        plt.tight_layout()
+        plt.show()
+c = LiscenseStatusTrends()
+c.scatter_plot()
+c.pie_chart_borough_collision_composition()
+c.pie_chart_borough_license_composition()

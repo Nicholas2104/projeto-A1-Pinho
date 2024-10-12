@@ -1,7 +1,7 @@
 import pandas as pd
 import pgeocode
 
-crashes = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Crashes_20241001.csv")
+crashes = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Crashes.csv")
 #persons = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Person_20240925.csv")
 #vehicle = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Vehicles_20240925.csv")
 
@@ -52,7 +52,7 @@ class LiscenseStatusCollisionData:
         self.complete_liscense_status_df = self.get_liscense_and_collision_info()
     def get_liscense_and_collision_info(self) -> pd.DataFrame:
         collision_data = crashes.copy(deep=True)[['COLLISION_ID','BOROUGH']]
-        liscense_data_df = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Vehicles_20241001.csv")[['COLLISION_ID','DRIVER_LICENSE_STATUS','CONTRIBUTING_FACTOR_1','CONTRIBUTING_FACTOR_2']]
+        liscense_data_df = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Vehicles.csv")[['COLLISION_ID','DRIVER_LICENSE_STATUS','CONTRIBUTING_FACTOR_1','CONTRIBUTING_FACTOR_2']]
         liscense_data_df = pd.merge(liscense_data_df, collision_data, on='COLLISION_ID', how='left')
         liscense_data_df.dropna(how='any',subset=['DRIVER_LICENSE_STATUS','BOROUGH'],inplace=True)
         return liscense_data_df
