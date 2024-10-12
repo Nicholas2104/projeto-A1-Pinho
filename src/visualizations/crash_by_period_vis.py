@@ -62,7 +62,7 @@ class CrashByPeriodTrends:
             return contributing_factor_counts_1, contributing_factor_counts_2, contributing_factor_counts_3, contributing_factor_counts_4, contributing_factor_counts_5
         except KeyError as error:
             print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
-            
+
     def related_to_factors(self) -> pd.DataFrame:
         """
         Compile contributing factor counts into a single DataFrame and identify the most common contributing factors at different times of day.
@@ -116,5 +116,3 @@ class CrashByPeriodTrends:
         except KeyError as error:
             print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
 
-c = CrashByPeriodTrends()
-c.crash_by_period_plot()

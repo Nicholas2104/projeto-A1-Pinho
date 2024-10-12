@@ -110,15 +110,15 @@ class PedestriansAccidentsGraphs:
         incidents_df = incidents_df.head() # Take the first 5 streets with most incidents throgouth the years
         modified_df = pd.melt(incidents_df, id_vars='ON STREET NAME',var_name='victim class', value_name='number of victims')
         # Creates a bar graph to show the data
-        g = seaborn.catplot(data=modified_df, 
+        graph = seaborn.catplot(data=modified_df, 
                             x='ON STREET NAME',
                             y='number of victims', 
                             hue='victim class', 
                             kind='bar', 
                             height=5, 
                             aspect=1)
-        g.set_xticklabels(labels=['Broadway', '3rd Av', '5th Av', '2nd Av', 'Atlantic Av']) # Labelling the x-axis
-        g._legend.set_bbox_to_anchor((1, 0.75)) # Moving the legend for it not to overlap with the graph
-        g._legend.set_frame_on(True)
+        graph.set_xticklabels(labels=['Broadway', '3rd Av', '5th Av', '2nd Av', 'Atlantic Av']) # Labelling the x-axis
+        graph._legend.set_bbox_to_anchor((1, 0.75)) # Moving the legend for it not to overlap with the graph
+        graph._legend.set_frame_on(True)
         plt.tight_layout() # Ensure that all visualizations are correctly displayed
         plt.show()
