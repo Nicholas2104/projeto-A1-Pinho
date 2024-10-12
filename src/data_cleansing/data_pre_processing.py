@@ -6,7 +6,7 @@ try:
     crashes = pd.read_csv("src/dados/Motor_Vehicle_Collisions_-_Crashes.csv") # collect info from crashes csv to df 
     vehicle = pd.read_csv("src/dados/Motor_Vehicle_Collisions_-_Vehicles.csv") # collect info from vehicles csv to df
 except FileNotFoundError as error:
-    print(f"{error.__class__}: File path passed for data sources is invalid")
+    return 'File path passed for data sources is invalid"
 class CrashLocationData:
     """Class responsible for creating a dataframe of collisions with complete geographical data
     """
@@ -29,8 +29,8 @@ class CrashLocationData:
             full_geo_data_df = self.fill_lat_long_by_zip(geo_data_df) # fill empty geographical data through aproximations made by zip-code
             return full_geo_data_df # return dataframe of collisions with complete geographical data
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
-            return None
+            return 'Dataframe passed has inconsistent/unaccounted keys'
+            
 
     def fill_lat_long_by_zip(self,data:pd.DataFrame) -> pd.DataFrame:
         """
@@ -55,11 +55,9 @@ class CrashLocationData:
             data.loc[coordinates.index, "LATITUDE"] = coordinates["latitude"] # fill missing lon
             return data # return completed dataset
         except TypeError as error:
-            print(f'{error.__class__}: Paramater passed was not a pandas.DataFrame')
-            return None
+            return 'Paramater passed was not a pandas.DataFrame'
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
-            return None
+            return 'Dataframe passed has inconsistent/unaccounted keys'
 class LiscenseStatusCollisionData:
     """Class responsible for cleaning a selecting collision data to be used to asses composition and distribuition of 
     specfic collisions by Driver liscense status of those involved
@@ -80,8 +78,7 @@ class LiscenseStatusCollisionData:
             liscense_data_df.dropna(how='any',subset=['DRIVER_LICENSE_STATUS','BOROUGH'],inplace=True) # rows without info on borough cannot be used
             return liscense_data_df
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
-            return None
+            return 'Dataframe passed has inconsistent/unaccounted keys'
     
 class CrashByPeriodData:
     """Class responsible for creating and cleaning dataframe with all accident data encompassing all CF and the time of the collision
@@ -108,5 +105,4 @@ class CrashByPeriodData:
             
             return accidents_data
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
-            return None
+            return 'Dataframe passed has inconsistent/unaccounted keys'

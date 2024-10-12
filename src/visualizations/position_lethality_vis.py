@@ -61,7 +61,7 @@ class CarSeatDangers:
             df_person_colision.reset_index(inplace=True)
             return df_person_colision
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return 'Dataframe passed has inconsistent/unaccounted keys'
     def replace_values(self):
         """
         A function that replaces the values in the POSITION_IN_VEHICLE column with smaller values, so that they are easier to understand
@@ -95,7 +95,7 @@ class CarSeatDangers:
             
             return clean_df
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return 'Dataframe passed has inconsistent/unaccounted keys'
 
     def data_processing(self):
         """
@@ -140,7 +140,7 @@ class CarSeatDangers:
 
             return np.array(accident_count)
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return 'Dataframe passed has inconsistent/unaccounted keys'
     def show_graph(self):
         """
         A function that joins the data, modifies the graph and displays the graph
@@ -185,4 +185,4 @@ class CarSeatDangers:
             # Showing the graph
             plt.show()
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return 'Dataframe passed has inconsistent/unaccounted keys'

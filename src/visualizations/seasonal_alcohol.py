@@ -42,7 +42,7 @@ class SeasonalAlcoholColissions:
             processed_df = processed_df.sort_values(by='MONTH')
             return processed_df
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return'Dataframe passed has inconsistent/unaccounted keys'
 
     def graph_plotting(self):
         """Creates the visualization of accidents involving drugs/alcohol seasonally
@@ -71,4 +71,4 @@ class SeasonalAlcoholColissions:
             plt.ylabel("Number of Accidents")
             plt.show()
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return 'Dataframe passed has inconsistent/unaccounted keys'

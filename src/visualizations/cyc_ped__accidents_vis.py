@@ -55,7 +55,7 @@ class PedestriansAccidents:
             filtered_geodf = filtered_geodf[filtered_geodf['LATITUDE']!=0] # Cleaning some outliers that had Latitude=0
             return filtered_geodf
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return 'Dataframe passed has inconsistent/unaccounted keys'
     def plot_accidents(self):
         """
         Plots all accidents involving pedestrians and/or cyclists across the city of new york
@@ -98,9 +98,9 @@ class PedestriansAccidentsGraphs:
             incidents_by_street.sort_values(by='GENERAL INCIDENTS',ascending=False, inplace=True)
             return incidents_by_street
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return 'Dataframe passed has inconsistent/unaccounted keys'
         except TypeError as error:
-            print(f'{error.__class__}: Incapable of summing cells of inconsitent type')
+            return 'Incapable of summing cells of inconsitent type'
         
     def accidents_graphs_plot(self):
         """

@@ -33,7 +33,7 @@ class LiscenseStatusTrends:
             else:
                 return 'Other'  # Classify as other
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return 'Dataframe passed has inconsistent/unaccounted keys'
 
     def get_borough_collision_composition(self) -> pd.DataFrame:
         """Compute the composition of collisions by contributing factor class for each borough.
@@ -48,7 +48,7 @@ class LiscenseStatusTrends:
             borough_group_collisions = self.collision_data.groupby(by='BOROUGH')[['CONTRIBUTING FACTOR CLASS']].value_counts(normalize=True).reset_index(name='Percentage of Collisions')  
             return borough_group_collisions 
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return 'Dataframe passed has inconsistent/unaccounted keys'
     def get_population_collision_composition(self) -> pd.DataFrame:
         """Compute the overall composition of collisions by contributing factor class for all of NYC.
         Returns:
@@ -62,7 +62,7 @@ class LiscenseStatusTrends:
             population_collision_composition['BOROUGH'] = 'All NYC'  
             return population_collision_composition  
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return 'Dataframe passed has inconsistent/unaccounted keys'
     def get_borough_liscense_composition(self) -> pd.DataFrame:
         """Compute the composition of collisions by driver license status for each borough.
         Returns:
@@ -73,7 +73,7 @@ class LiscenseStatusTrends:
             borough_license_composition = self.collision_data.groupby(by='BOROUGH')['DRIVER_LICENSE_STATUS'].value_counts(normalize=True).reset_index(name='Percentage of Collisions')  
             return borough_license_composition  
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return 'Dataframe passed has inconsistent/unaccounted keys'
     def get_population_liscense_composition(self) -> pd.DataFrame:
         """Compute the overall composition of collisions by driver license status for all of NYC.
         Returns:
@@ -85,7 +85,7 @@ class LiscenseStatusTrends:
             population_license_composition['BOROUGH'] = 'All NYC'  
             return population_license_composition  
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return 'Dataframe passed has inconsistent/unaccounted keys'
     def pie_chart_borough_license_composition(self):
         """Produces a collection of piecharts, one representative of the total population and other individualizaed
         by Borough demonstrating the proportion of collisions involving liscensed, unliscensed, and permit drivers
@@ -118,7 +118,7 @@ class LiscenseStatusTrends:
             fig.tight_layout(rect=[0, 0, 0.85, 1])
             plt.show()
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return 'Dataframe passed has inconsistent/unaccounted keys'
 
     def pie_chart_borough_collision_composition(self):
         """Produces a collection of piecharts, one representative of the total population and other individualizaed
@@ -151,7 +151,7 @@ class LiscenseStatusTrends:
             fig.tight_layout(rect=[0, 0, 0.85, 1])
             plt.show()
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return 'Dataframe passed has inconsistent/unaccounted keys'
     def scatter_plot(self):
         """Produces scatter plot to demonstrate relationship between proportion of unliscened/permit drivers
         in a Borough and its number of insattention/inexperience motivated collisions
@@ -191,4 +191,4 @@ class LiscenseStatusTrends:
             plt.tight_layout()
             plt.show()
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return 'Dataframe passed has inconsistent/unaccounted keys'

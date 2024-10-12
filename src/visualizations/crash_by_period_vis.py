@@ -38,9 +38,9 @@ class CrashByPeriodTrends:
                 if hour in times: 
                     return classification 
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return 'Dataframe passed has inconsistent/unaccounted keys'
         except IndexError as error:
-            print(f'{error.__class__}: Index passed is invalid - hour cannot be formatted')
+            return 'Index passed is invalid - hour cannot be formatted'
 
 
     def get_contributing_factor_counts(self) -> pd.DataFrame:
@@ -61,7 +61,7 @@ class CrashByPeriodTrends:
             #return all 5 counts
             return contributing_factor_counts_1, contributing_factor_counts_2, contributing_factor_counts_3, contributing_factor_counts_4, contributing_factor_counts_5
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return 'Dataframe passed has inconsistent/unaccounted keys'
 
     def related_to_factors(self) -> pd.DataFrame:
         """
@@ -93,7 +93,7 @@ class CrashByPeriodTrends:
             summed_df = summed_df.sort_values(by='TIME OF DAY')
             return summed_df, most_common_contributing_factors
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return 'Dataframe passed has inconsistent/unaccounted keys'
     def crash_by_period_plot(self):
         """
         Plot a line graph of crash occurrences by time of day, with contributing factors.
@@ -114,5 +114,5 @@ class CrashByPeriodTrends:
             plt.xticks(rotation=45)
             plt.show()
         except KeyError as error:
-            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return 'Dataframe passed has inconsistent/unaccounted keys'
 
