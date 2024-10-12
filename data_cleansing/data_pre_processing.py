@@ -4,7 +4,6 @@ import pandas as pd
 import pgeocode
 
 crashes = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Crashes.csv")
-crashes = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Crashes.csv")
 #persons = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Person_20240925.csv")
 #vehicle = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Vehicles_20240925.csv")
 
@@ -49,7 +48,6 @@ class CrashLocationData:
         data.loc[coordinates.index, "LATITUDE"] = coordinates["latitude"] 
         return data
 
-class LiscenseStatusCollisionData:
 class LiscenseStatusCollisionData:
     def __init__(self):
         self.complete_liscense_status_df = self.get_liscense_and_collision_info()
