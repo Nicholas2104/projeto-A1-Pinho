@@ -30,6 +30,7 @@ class CrashLocationData:
             return full_geo_data_df # return dataframe of collisions with complete geographical data
         except KeyError as error:
             print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return None
 
     def fill_lat_long_by_zip(self,data:pd.DataFrame) -> pd.DataFrame:
         """
@@ -55,8 +56,10 @@ class CrashLocationData:
             return data # return completed dataset
         except TypeError as error:
             print(f'{error.__class__}: Paramater passed was not a pandas.DataFrame')
+            return None
         except KeyError as error:
             print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return None
 class LiscenseStatusCollisionData:
     """Class responsible for cleaning a selecting collision data to be used to asses composition and distribuition of 
     specfic collisions by Driver liscense status of those involved
@@ -78,6 +81,7 @@ class LiscenseStatusCollisionData:
             return liscense_data_df
         except KeyError as error:
             print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return None
     
 class CrashByPeriodData:
     """Class responsible for creating and cleaning dataframe with all accident data encompassing all CF and the time of the collision
@@ -105,3 +109,4 @@ class CrashByPeriodData:
             return accidents_data
         except KeyError as error:
             print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+            return None
