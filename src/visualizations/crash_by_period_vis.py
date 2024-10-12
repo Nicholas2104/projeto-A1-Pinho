@@ -46,11 +46,11 @@ class CrashByPeriodTrends:
         """
         self.accidents_data['TIME OF DAY'] = self.accidents_data.apply(self.classify_time_of_day, axis=1) # classify each time of day
         # group data by Time of day, filtering by respective CF and counting the individual kinds of CF that occurredat that period of the day
-        contributing_factor_counts_1 = self.accidents_data.groupby(by='TIME OF DAY')[['CONTRIBUTING FACTOR VEHICLE 1']].value_counts().reset_index(name='Number of occurences') 
-        contributing_factor_counts_2 = self.accidents_data.groupby(by='TIME OF DAY')[['CONTRIBUTING FACTOR VEHICLE 2']].value_counts().reset_index(name='Number of occurences')
-        contributing_factor_counts_3 = self.accidents_data.groupby(by='TIME OF DAY')[['CONTRIBUTING FACTOR VEHICLE 3']].value_counts().reset_index(name='Number of occurences')
-        contributing_factor_counts_4 = self.accidents_data.groupby(by='TIME OF DAY')[['CONTRIBUTING FACTOR VEHICLE 4']].value_counts().reset_index(name='Number of occurences')
-        contributing_factor_counts_5 = self.accidents_data.groupby(by='TIME OF DAY')[['CONTRIBUTING FACTOR VEHICLE 5']].value_counts().reset_index(name='Number of occurences')
+        contributing_factor_counts_1 = self.accidents_data.groupby(by='TIME OF DAY')[['CONTRIBUTING FACTOR VEHICLE 1']].value_counts().reset_index(name='Number of occurrences') 
+        contributing_factor_counts_2 = self.accidents_data.groupby(by='TIME OF DAY')[['CONTRIBUTING FACTOR VEHICLE 2']].value_counts().reset_index(name='Number of occurrences')
+        contributing_factor_counts_3 = self.accidents_data.groupby(by='TIME OF DAY')[['CONTRIBUTING FACTOR VEHICLE 3']].value_counts().reset_index(name='Number of occurrences')
+        contributing_factor_counts_4 = self.accidents_data.groupby(by='TIME OF DAY')[['CONTRIBUTING FACTOR VEHICLE 4']].value_counts().reset_index(name='Number of occurrences')
+        contributing_factor_counts_5 = self.accidents_data.groupby(by='TIME OF DAY')[['CONTRIBUTING FACTOR VEHICLE 5']].value_counts().reset_index(name='Number of occurrences')
 
         #return all 5 counts
         return contributing_factor_counts_1, contributing_factor_counts_2, contributing_factor_counts_3, contributing_factor_counts_4, contributing_factor_counts_5
@@ -98,7 +98,8 @@ class CrashByPeriodTrends:
         # Set the x and y labels, alongside eith legend and title
         plt.xlabel('Period of time')
         plt.ylabel('Logarithmic number of accidents')
-        plt.legend(title='Contributing factor')
+        plt.legend(title='Contributing factor',loc='upper left')
         plt.xticks(rotation=45)
         plt.show()
+
 
