@@ -178,7 +178,3 @@ class CarSeatDangers:
 
         # Showing the graph
         plt.show()
-
-c = CarSeatDangers()
-
-c.show_graph()
