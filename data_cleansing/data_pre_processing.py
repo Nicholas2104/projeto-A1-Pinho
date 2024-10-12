@@ -4,9 +4,9 @@ import pandas as pd
 import pgeocode
 
 crashes = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Crashes.csv")
+crashes = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Crashes.csv")
 #persons = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Person_20240925.csv")
 #vehicle = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Vehicles_20240925.csv")
-
 
 class CrashLocationData:
     def __init__(self):
@@ -49,4 +49,34 @@ class CrashLocationData:
         data.loc[coordinates.index, "LATITUDE"] = coordinates["latitude"] 
         return data
 
-
+class LiscenseStatusCollisionData:
+class LiscenseStatusCollisionData:
+    def __init__(self):
+        self.complete_liscense_status_df = self.get_liscense_and_collision_info()
+    def get_liscense_and_collision_info(self) -> pd.DataFrame:
+        collision_data = crashes.copy(deep=True)[['COLLISION_ID','BOROUGH']]
+        liscense_data_df = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Vehicles.csv")[['COLLISION_ID','DRIVER_LICENSE_STATUS','CONTRIBUTING_FACTOR_1','CONTRIBUTING_FACTOR_2']]
+        liscense_data_df = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Vehicles.csv")[['COLLISION_ID','DRIVER_LICENSE_STATUS','CONTRIBUTING_FACTOR_1','CONTRIBUTING_FACTOR_2']]
+        liscense_data_df = pd.merge(liscense_data_df, collision_data, on='COLLISION_ID', how='left')
+        liscense_data_df.dropna(how='any',subset=['DRIVER_LICENSE_STATUS','BOROUGH'],inplace=True)
+        return liscense_data_df
+    
+class CrashByPeriodData:
+    def __init__(self):
+        self.complete_crash_period_data = self.get_crash_data()
+    def get_crash_data(self) -> pd.DataFrame:
+        accidents_data = crashes.copy(deep=True)[[
+                                                'CRASH TIME', 
+                                                'CONTRIBUTING FACTOR VEHICLE 1',
+                                                'CONTRIBUTING FACTOR VEHICLE 2',
+                                                'CONTRIBUTING FACTOR VEHICLE 3',
+                                                'CONTRIBUTING FACTOR VEHICLE 4',
+                                                'CONTRIBUTING FACTOR VEHICLE 5']]
+        accidents_data.dropna(how='any', subset=['CRASH TIME', 'CONTRIBUTING FACTOR VEHICLE 1'], inplace=True) # if CFV 1 doesn't exist, others don't too
+        accidents_data = accidents_data[accidents_data['CONTRIBUTING FACTOR VEHICLE 1'] != 'Unspecified']
+        accidents_data = accidents_data[accidents_data['CONTRIBUTING FACTOR VEHICLE 2'] != 'Unspecified']
+        accidents_data = accidents_data[accidents_data['CONTRIBUTING FACTOR VEHICLE 3'] != 'Unspecified']
+        accidents_data = accidents_data[accidents_data['CONTRIBUTING FACTOR VEHICLE 4'] != 'Unspecified']
+        accidents_data = accidents_data[accidents_data['CONTRIBUTING FACTOR VEHICLE 5'] != 'Unspecified']
+        
+        return accidents_data
