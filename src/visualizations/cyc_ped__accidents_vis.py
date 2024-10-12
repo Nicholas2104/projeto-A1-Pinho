@@ -36,24 +36,26 @@ class PedestriansAccidents:
             A data frame with all relevant geographic data related to motorvehicle accidents
             which involve the injury or death of pedestrians and/or pedestrians
         """
-        # Getting rid of all rows that doesn't have data about cyclists or pedestrians
-        self.geodf.dropna(inplace=True, axis=0, subset=[
-            'NUMBER OF PEDESTRIANS INJURED',
-            'NUMBER OF PEDESTRIANS KILLED',
-            'NUMBER OF CYCLIST INJURED',
-            'NUMBER OF CYCLIST KILLED'], how='all')
-        # Using a mask to clean all rows that doesn't involve cyclists or pedestrians
-        mask = (self.geodf[[
-            'NUMBER OF PEDESTRIANS INJURED',
-            'NUMBER OF PEDESTRIANS KILLED',
-            'NUMBER OF CYCLIST INJURED',
-            'NUMBER OF CYCLIST KILLED']] != 0).any(axis=1)
-        filtered_geodf = self.geodf[mask]
-        filtered_geodf.reset_index(inplace=True, drop=True)
-        filtered_geodf = filtered_geodf[~filtered_geodf.is_empty] # Cleaning points that doesn't have a geographic point to plot
-        filtered_geodf = filtered_geodf[filtered_geodf['LATITUDE']!=0] # Cleaning some outliers that had Latitude=0
-        return filtered_geodf
-
+        try:
+            # Getting rid of all rows that doesn't have data about cyclists or pedestrians
+            self.geodf.dropna(inplace=True, axis=0, subset=[
+                'NUMBER OF PEDESTRIANS INJURED',
+                'NUMBER OF PEDESTRIANS KILLED',
+                'NUMBER OF CYCLIST INJURED',
+                'NUMBER OF CYCLIST KILLED'], how='all')
+            # Using a mask to clean all rows that doesn't involve cyclists or pedestrians
+            mask = (self.geodf[[
+                'NUMBER OF PEDESTRIANS INJURED',
+                'NUMBER OF PEDESTRIANS KILLED',
+                'NUMBER OF CYCLIST INJURED',
+                'NUMBER OF CYCLIST KILLED']] != 0).any(axis=1)
+            filtered_geodf = self.geodf[mask]
+            filtered_geodf.reset_index(inplace=True, drop=True)
+            filtered_geodf = filtered_geodf[~filtered_geodf.is_empty] # Cleaning points that doesn't have a geographic point to plot
+            filtered_geodf = filtered_geodf[filtered_geodf['LATITUDE']!=0] # Cleaning some outliers that had Latitude=0
+            return filtered_geodf
+        except KeyError as error:
+            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
     def plot_accidents(self):
         """
         Plots all accidents involving pedestrians and/or cyclists across the city of new york
@@ -80,21 +82,26 @@ class PedestriansAccidentsGraphs:
         self.crash_data = PedestriansAccidents().clean_df()
     
     def streets_accidents(self) -> geopandas.GeoDataFrame:
-        # Filters the dataframe by dropping rows without street name
-        self.crash_data = self.crash_data[self.crash_data['ON STREET NAME'].isna() == False]
-        self.crash_data["PEDESTRIANS INCIDENTS"] = self.crash_data['NUMBER OF PEDESTRIANS INJURED'] + self.crash_data['NUMBER OF PEDESTRIANS KILLED']
-        self.crash_data["CYCLISTS INCIDENTS"] = self.crash_data['NUMBER OF CYCLIST INJURED'] + self.crash_data['NUMBER OF CYCLIST KILLED']
-        self.crash_data["GENERAL INCIDENTS"] = self.crash_data['PEDESTRIANS INCIDENTS'] + self.crash_data['CYCLISTS INCIDENTS']
-        # Group each street and then sum the values of each selected column to count the accidents by victim
-        incidents_by_street = self.crash_data.groupby(['ON STREET NAME'])[['ON STREET NAME','GENERAL INCIDENTS', 
-                                                                'NUMBER OF CYCLIST INJURED',
-                                                                'NUMBER OF CYCLIST KILLED',
-                                                                'NUMBER OF PEDESTRIANS INJURED',
-                                                                'NUMBER OF PEDESTRIANS KILLED']].sum()
-        # Sort the incidents count in a descending order, so the first ones have more accidents
-        incidents_by_street.sort_values(by='GENERAL INCIDENTS',ascending=False, inplace=True)
-        return incidents_by_street
-
+        try:
+            # Filters the dataframe by dropping rows without street name
+            self.crash_data = self.crash_data[self.crash_data['ON STREET NAME'].isna() == False]
+            self.crash_data["PEDESTRIANS INCIDENTS"] = self.crash_data['NUMBER OF PEDESTRIANS INJURED'] + self.crash_data['NUMBER OF PEDESTRIANS KILLED']
+            self.crash_data["CYCLISTS INCIDENTS"] = self.crash_data['NUMBER OF CYCLIST INJURED'] + self.crash_data['NUMBER OF CYCLIST KILLED']
+            self.crash_data["GENERAL INCIDENTS"] = self.crash_data['PEDESTRIANS INCIDENTS'] + self.crash_data['CYCLISTS INCIDENTS']
+            # Group each street and then sum the values of each selected column to count the accidents by victim
+            incidents_by_street = self.crash_data.groupby(['ON STREET NAME'])[['ON STREET NAME','GENERAL INCIDENTS', 
+                                                                    'NUMBER OF CYCLIST INJURED',
+                                                                    'NUMBER OF CYCLIST KILLED',
+                                                                    'NUMBER OF PEDESTRIANS INJURED',
+                                                                    'NUMBER OF PEDESTRIANS KILLED']].sum()
+            # Sort the incidents count in a descending order, so the first ones have more accidents
+            incidents_by_street.sort_values(by='GENERAL INCIDENTS',ascending=False, inplace=True)
+            return incidents_by_street
+        except KeyError as error:
+            print(f'{error.__class__}: Dataframe passed has inconsistent/unaccounted keys')
+        except TypeError as error:
+            print(f'{error.__class__}: Incapable of summing cells of inconsitent type')
+        
     def accidents_graphs_plot(self):
         """
         Plots a bar graph with the 5 streets with most accidents involving cyclists or pedestrians and what are their conditions
