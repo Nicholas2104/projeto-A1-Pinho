@@ -7,7 +7,7 @@ import hvplot.pandas
 import geoviews # Although we don't explicitly use geoviews, it is used by holoviews in the background
 
 
-class PedestriansAccidents():
+class PedestriansAccidents:
     """
     Used to filter and plot the data related to pedestrians and cyclists accidents based on known geographical data
     """
