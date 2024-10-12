@@ -14,7 +14,7 @@ This repository contains code and visualizations used in a scientific article an
 4. **What is the most frequent cause of accidents at different times of the day (morning, afternoon, evening, night)?**  
    Handled by: `crash_by_period_vis.py`
 
-5. **Do neighborhoods with the highest number of collisions caused by unlicensed drivers or those with a permit have a higher proportion of accidents caused by driver inattention?**  
+5. **Do neighborhoods with the highest number of collisions caused by unlicensed drivers or those with a permit have a higher proportion of accidents caused by driver inattention/inexperience?**  
    Handled by: `liscense_status_vis.py`
 # Getting Started
 
