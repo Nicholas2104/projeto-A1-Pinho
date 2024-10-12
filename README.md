@@ -51,5 +51,4 @@ After installing the dependencies and downloading the dataset, you can run the p
 
 ```bash
 python main.py
-\```
 
