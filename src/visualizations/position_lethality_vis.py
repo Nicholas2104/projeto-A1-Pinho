@@ -4,8 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-df_person_colision = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Person.csv")
-
+df_person_colision = pd.read_csv("src/dados/Motor_Vehicle_Collisions_-_Person.csv")
 class CarSeatDangers:
     def __init__(self):
         self.df = df_person_colision.copy(deep=True)

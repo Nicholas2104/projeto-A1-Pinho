@@ -3,7 +3,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-crashes = pd.read_csv("dados/Motor_Vehicle_Collisions_-_Crashes.csv")
+crashes = pd.read_csv("src/dados/Motor_Vehicle_Collisions_-_Crashes.csv")
 
 class SeasonalAlcoholColissions:
     """

@@ -3,8 +3,8 @@
 import pandas as pd
 import pgeocode
 
-crashes = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Crashes.csv")
-vehicle = pd.read_csv("./dados/Motor_Vehicle_Collisions_-_Vehicles.csv")
+crashes = pd.read_csv("src/dados/Motor_Vehicle_Collisions_-_Crashes.csv")
+vehicle = pd.read_csv("src/dados/Motor_Vehicle_Collisions_-_Vehicles.csv")
 
 class CrashLocationData:
     def __init__(self):
