@@ -6,7 +6,7 @@ try:
     crashes = pd.read_csv("src/dados/Motor_Vehicle_Collisions_-_Crashes.csv") # collect info from crashes csv to df 
     vehicle = pd.read_csv("src/dados/Motor_Vehicle_Collisions_-_Vehicles.csv") # collect info from vehicles csv to df
 except FileNotFoundError as error:
-    return 'File path passed for data sources is invalid"
+    raise f"File path passed for data sources is invalid:{error}"
 class CrashLocationData:
     """Class responsible for creating a dataframe of collisions with complete geographical data
     """
@@ -44,7 +44,7 @@ class CrashLocationData:
         try:
             data_with_zip = data[data["ZIP CODE"].isna() == False] # DataFrame of salvageable rows 
             missing_geo_df = data_with_zip[data_with_zip["LATITUDE"].isna() == True] # select all rows with missing geographical data
-            nomi = pgeocode.Nominatim('us') # realtional database of american zipcodes and latitude and longitude
+            nomi = pgeocode.Nominatim('us') # relational database of american zipcodes and latitude and longitude
 
             # lambda function takes all values before "." i.e.: original_zip = xxx.z new_zip = xxx
             formatted_postal_codes = missing_geo_df["ZIP CODE"].astype('str').apply(func=lambda row: row.split(".")[0]).to_list() # Reformatting to be in accordance to database postal codes
@@ -58,9 +58,10 @@ class CrashLocationData:
             return 'Paramater passed was not a pandas.DataFrame'
         except KeyError as error:
             return 'Dataframe passed has inconsistent/unaccounted keys'
+        
 class LiscenseStatusCollisionData:
     """Class responsible for cleaning a selecting collision data to be used to asses composition and distribuition of 
-    specfic collisions by Driver liscense status of those involved
+    specific collisions by Driver liscense status of those involved
     """
     def __init__(self):
         self.complete_liscense_status_df = self.get_liscense_and_collision_info()
