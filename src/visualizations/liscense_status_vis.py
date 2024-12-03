@@ -161,15 +161,16 @@ class LiscenseStatusTrends:
             borough_lisc_comp = self.get_borough_liscense_composition()
             
             # perecentage of collisions with CF as inattention/inexperience
-            borough_inattention_collisions = borough_collision_comp[borough_collision_comp['CONTRIBUTING FACTOR CLASS'] == 'Inattention/Inexeprience Related']
-
+            borough_inattention_collisions = borough_collision_comp[borough_collision_comp['CONTRIBUTING FACTOR CLASS'] == 'Inattention/Inexperience Related']
             # dataframe of sepearte percentages of all collisions in a single borough cause by both unliscned and permit drivers
             filtered_borough_lisc_comp = borough_lisc_comp[borough_lisc_comp['DRIVER_LICENSE_STATUS'] != 'Licensed']
             # dataframe that claculates the total percetnage of both unliscensed and permit frivers in a borough
-            sum_borough_lisc_comp = filtered_borough_lisc_comp.groupby(by='BOROUGH',as_index=False)['Perecentage of Collisions'].sum()
-            
-            x_axis_percentage_of_drivers = sum_borough_lisc_comp['Perecentage of Collisions']
-            y_axis_percentage_of_collisions = borough_inattention_collisions['Perecentage of Collisions']
+            sum_borough_lisc_comp = filtered_borough_lisc_comp.groupby(by='BOROUGH',as_index=False)['Percentage of Collisions'].sum()
+            print(filtered_borough_lisc_comp)
+            filtered_borough_lisc_comp.to_excel("sum_borough_lisc_comp.xlsx")
+
+            x_axis_percentage_of_drivers = sum_borough_lisc_comp['Percentage of Collisions']
+            y_axis_percentage_of_collisions = borough_inattention_collisions['Percentage of Collisions']
             borough_names = sum_borough_lisc_comp['BOROUGH']
             #creating scatter plot based on known percentages
             plt.scatter(x=x_axis_percentage_of_drivers, y=y_axis_percentage_of_collisions)
@@ -192,3 +193,6 @@ class LiscenseStatusTrends:
             plt.show()
         except KeyError as error:
             return 'Dataframe passed has inconsistent/unaccounted keys'
+        
+p = LiscenseStatusTrends()
+p.scatter_plot()

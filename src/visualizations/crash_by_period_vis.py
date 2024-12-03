@@ -116,3 +116,5 @@ class CrashByPeriodTrends:
         except KeyError as error:
             return 'Dataframe passed has inconsistent/unaccounted keys'
 
+t = CrashByPeriodTrends()
+t.crash_by_period_plot()
